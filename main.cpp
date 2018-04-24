@@ -11,6 +11,30 @@
 std::mt19937_64 mt(456981365819651);
 
 constexpr double Radius_of_Sphere = 10.0;
+constexpr int    Num_Sampling_Points = 10;
+
+void projection(std::vector<Vector3D>& ps);
+Vector3D random_base_point();
+inline int c(const Vector3D& center, const double dtheta, const std::vector<Vector3D>& ps);
+
+int main(int argc, char* argv[])
+{
+   std::vector<std::string> argments;
+   for(int i=0;i<argc;++i){ argments.push_back(argv[i]); }
+   const std::vector<Vector3D> sampling_points = 
+      [&]()
+      {
+         std::vector<Vector3D> res(Num_Sampling_Points);
+         for(int i=0;i<Num_Sampling_Points;++i)
+         {
+            res.at(i)=random_base_point();
+         }
+         return res;
+      };
+
+  
+   return EXIT_SUCCESS;
+}
 
 void projection(std::vector<Vector3D>& ps)
 {
@@ -50,12 +74,4 @@ int c(const Vector3D& center, const double dtheta, const std::vector<Vector3D>& 
       res+=(is_on_range(ps.at(i)))?1:0;
    }
    return res;
-}
-
-int main(int argc, char* argv[])
-{
-   std::vector<std::string> argments;
-   for(int i=0;i<argc;++i){ argments.push_back(argv[i]); }
-  
-   return EXIT_SUCCESS;
 }

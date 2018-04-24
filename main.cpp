@@ -37,6 +37,21 @@ Vector3D random_base_point()
    return res;
 }
 
+int c(const Vector3D& center, const double dtheta, const std::vector<Vector3D>& ps)
+{
+   const auto is_on_range =
+      [&](const Vector3D& p)-> bool
+      {
+         return angle(center,p)<=dtheta;
+      };
+   int res=0;
+   for(size_t i=0,i_size=ps.size();i<i_size;++i)
+   {
+      res+=(is_on_range(ps.at(i)))?1:0;
+   }
+   return res;
+}
+
 int main(int argc, char* argv[])
 {
    std::vector<std::string> argments;

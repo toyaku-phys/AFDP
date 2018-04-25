@@ -3,7 +3,7 @@
 #include "ReadFile.hpp"
 #include "Vector3D.hpp"
 
-std::vector<Vector3D> load(Getline& gl, const int step)
+std::vector<Vector3D> load(Getline& gl, const int step, const double r_threthold)
 {
    std::vector<Vector3D> res;
    const std::string str_step = boost::lexical_cast<std::string>(step);
@@ -27,15 +27,8 @@ std::vector<Vector3D> load(Getline& gl, const int step)
                   break;
                }
                boost::algorithm::split(vs,tmp,boost::is_any_of(" "));//index x y z
-               res.push_back
-                  (
-                     Vector3D
-                     (
-                        boost::lexical_cast<double> (vs.at(1)),
-                        boost::lexical_cast<double> (vs.at(2)),
-                        boost::lexical_cast<double> (vs.at(3))
-                     )
-                  );
+               Vector3D vtmp(boost::lexical_cast<double> (vs.at(1)),boost::lexical_cast<double> (vs.at(2)),boost::lexical_cast<double> (vs.at(3)));
+               if(vtmp.norm()>=r_threthold){res.push_back(vtmp);}
             }
          }
          break;

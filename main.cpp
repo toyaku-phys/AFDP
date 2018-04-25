@@ -24,7 +24,9 @@ int main(int argc, char* argv[])
 {
    std::vector<std::string> argments;
    for(int i=0;i<argc;++i){ argments.push_back(argv[i]); }
-   std::string input_file;//TODO set
+   std::string input_file;//TODO set using argments
+   int begin_step=1000;//TODO set using argments
+   int delta_step=1000;//TODO set using argments
    Getline gl(input_file);
    const std::vector<Vector3D> sampling_points = 
       [&]()
@@ -36,8 +38,6 @@ int main(int argc, char* argv[])
          }
          return res;
       }();
-    
-
   
    return EXIT_SUCCESS;
 }

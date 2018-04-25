@@ -10,6 +10,7 @@
 #include "constexpr_math.hpp"
 #include "ReadFile.hpp"
 #include "LoadParticles.hpp"
+#include "Kahan_summation_algorithm.hpp"
 std::mt19937_64 mt(456981365819651);
 
 constexpr double Radius_of_Sphere     = 10.0;
@@ -25,8 +26,9 @@ int main(int argc, char* argv[])
    std::vector<std::string> argments;
    for(int i=0;i<argc;++i){ argments.push_back(argv[i]); }
    std::string input_file;//TODO set using argments
-   int begin_step=1000;//TODO set using argments
-   int delta_step=1000;//TODO set using argments
+   int begin_step=1000;//   TODO set using argments
+   int delta_step=1000;//   TODO set using argments
+   double dtheta = 0.15;//  TODO set using argments
    Getline gl(input_file);
    const std::vector<Vector3D> sampling_points = 
       [&]()
@@ -38,6 +40,17 @@ int main(int argc, char* argv[])
          }
          return res;
       }();
+
+   for(int step = begin_step; ;step+=delta_step)
+   {
+      std::vector<Vector3D> particles = load(gl,step,Sampling_R_Threthold);
+      if(particles.empty()){break;}
+      projection(particles);
+      for(int sp=0,sp_size=sampling_points.size();sp<sp_size;++sp)
+      {
+         const int c_res = c(sampling_points.at(sp),dtheta,particles);
+      }
+   }
   
    return EXIT_SUCCESS;
 }

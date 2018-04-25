@@ -25,10 +25,12 @@ int main(int argc, char* argv[])
 {
    std::vector<std::string> argments;
    for(int i=0;i<argc;++i){ argments.push_back(argv[i]); }
-   std::string input_file;//TODO set using argments
+   std::string input_file; //TODO set using argments
+   std::string output_file="def.dat";//TODO set using argments
    int begin_step=1000;//   TODO set using argments
    int delta_step=1000;//   TODO set using argments
    double dtheta = 0.15;//  TODO set using argments
+   int num_sampling_loop = 10;//TODO set using argments
    Getline gl(input_file);
    const std::vector<Vector3D> sampling_points = 
       [&]()
@@ -41,16 +43,27 @@ int main(int argc, char* argv[])
          return res;
       }();
 
-   for(int step = begin_step; ;step+=delta_step)
+   std::ofstream ofs(output_file,std::ios::trunc);
+   for(int sl=0;sl<num_sampling_loop;++sl)
    {
-      std::vector<Vector3D> particles = load(gl,step,Sampling_R_Threthold);
-      if(particles.empty()){break;}
-      projection(particles);
-      for(int sp=0,sp_size=sampling_points.size();sp<sp_size;++sp)
+      std::vector<std::tuple<Kahan,Kahan> > sum_sum2;
+      for(int step=begin_step; ;step+=delta_step)
       {
-         const int c_res = c(sampling_points.at(sp),dtheta,particles);
+         std::vector<Vector3D> particles = load(gl,step,Sampling_R_Threthold);
+         if(particles.empty()){break;}
+         if(sum_sum2.empty()){sum_sum2.resize(particles.size());}
+
+         projection(particles);
+         for(int sp=0,sp_size=sampling_points.size();sp<sp_size;++sp)
+         {
+            const int c_res = c(sampling_points.at(sp),dtheta,particles);
+            std::get<0>(sum_sum2.at(sp))+=c_res;
+            std::get<1>(sum_sum2.at(sp))+=c_res*c_res;
+         }
       }
+      //output variance
    }
+   ofs.close();
   
    return EXIT_SUCCESS;
 }

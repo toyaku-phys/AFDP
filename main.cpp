@@ -8,10 +8,13 @@
 #include <boost/lexical_cast.hpp>
 #include "Vector3D.hpp"
 #include "constexpr_math.hpp"
+#include "ReadFile.hpp"
+#include "LoadParticles.hpp"
 std::mt19937_64 mt(456981365819651);
 
-constexpr double Radius_of_Sphere = 10.0;
-constexpr int    Num_Sampling_Points = 10;
+constexpr double Radius_of_Sphere     = 10.0;
+constexpr int    Num_Sampling_Points  = 10;
+constexpr double Sampling_R_Threthold = 6.0;
 
 void projection(std::vector<Vector3D>& ps);
 Vector3D random_base_point();
@@ -21,6 +24,8 @@ int main(int argc, char* argv[])
 {
    std::vector<std::string> argments;
    for(int i=0;i<argc;++i){ argments.push_back(argv[i]); }
+   std::string input_file;//TODO set
+   Getline gl(input_file);
    const std::vector<Vector3D> sampling_points = 
       [&]()
       {
@@ -30,7 +35,8 @@ int main(int argc, char* argv[])
             res.at(i)=random_base_point();
          }
          return res;
-      };
+      }();
+    
 
   
    return EXIT_SUCCESS;

@@ -31,7 +31,8 @@ Kahan::Kahan(const double& val)
 
 double Kahan::get_av()const
 {
-   return sum/(counter.convert_to<double>());
+   const auto res = sum/(counter.convert_to<double>());
+   return res;
 }
 
 #pragma clang optimize off

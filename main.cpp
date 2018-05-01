@@ -13,9 +13,9 @@
 #include "Kahan_summation_algorithm.hpp"
 std::mt19937_64 mt(456981365819651);
 
-constexpr double Radius_of_Sphere     = 10.0;
+constexpr double Radius_of_Sphere     = 8.5;
 constexpr int    Num_Sampling_Points  = 5;
-constexpr double Sampling_R_Threthold = 6.5;
+constexpr double Sampling_R_Threthold = 6.0;
 
 void projection(std::vector<Vector3D>& ps);
 Vector3D random_base_point();
@@ -34,17 +34,17 @@ int main(int argc, char* argv[])
    int num_sampling_loop = 10;
 
    try{
-   for(size_t i=0,i_size=argments.size();i<i_size;++i)
-   {
-      std::vector<std::string> vs;
-      boost::algorithm::split(vs,argments.at(i),boost::is_any_of("="));
-      if("in" ==vs.at(0)){input_file =vs.at(1);}
-      if("out"==vs.at(0)){output_file=vs.at(1);}
-      if("begin_step"==vs.at(0)){begin_step=boost::lexical_cast<int>(vs.at(1));}
-      if("delta_step"==vs.at(0)){delta_step=boost::lexical_cast<int>(vs.at(1));}
-      if("delta_theta"==vs.at(0)){dtheta=boost::lexical_cast<double>(vs.at(1));}
-      if("num_sampling_loop"==vs.at(0)){num_sampling_loop=boost::lexical_cast<int>(vs.at(1));}
-   }
+      for(size_t i=0,i_size=argments.size();i<i_size;++i)
+      {
+         std::vector<std::string> vs;
+         boost::algorithm::split(vs,argments.at(i),boost::is_any_of("="));
+         if("in" ==vs.at(0)){input_file =vs.at(1);}
+         if("out"==vs.at(0)){output_file=vs.at(1);}
+         if("begin_step"==vs.at(0)){begin_step=boost::lexical_cast<int>(vs.at(1));}
+         if("delta_step"==vs.at(0)){delta_step=boost::lexical_cast<int>(vs.at(1));}
+         if("delta_theta"==vs.at(0)){dtheta=boost::lexical_cast<double>(vs.at(1));}
+         if("num_sampling_loop"==vs.at(0)){num_sampling_loop=boost::lexical_cast<int>(vs.at(1));}
+      }
    }catch(...){std::cout<<"fail: argments"<<std::endl;}
 
    std::ofstream ofs(output_file,std::ios::trunc);

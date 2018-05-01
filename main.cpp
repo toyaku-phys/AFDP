@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
    int begin_step= 1000;
    int delta_step= 1000;
    double dtheta = 0.15;
-   int num_sampling_loop = 10;
+   int num_sampling_loop = 5000;
 
    try{
       for(size_t i=0,i_size=argments.size();i<i_size;++i)
@@ -46,6 +46,7 @@ int main(int argc, char* argv[])
          if("num_sampling_loop"==vs.at(0)){num_sampling_loop=boost::lexical_cast<int>(vs.at(1));}
       }
    }catch(...){std::cout<<"fail: argments"<<std::endl;}
+   output_file+=".afdp";
 
    std::ofstream ofs(output_file,std::ios::trunc);
    std::tuple<Kahan,Kahan> s2_stock;

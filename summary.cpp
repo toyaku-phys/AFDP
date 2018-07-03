@@ -66,6 +66,14 @@ int main(int argc, char* argv[])
          insert(tag,val);
       }
    }
+   std::sort
+      (
+         contents.begin(),contents.end(),
+         [](const auto& a, const auto& b)
+         {
+            return (boost::lexical_cast<double>(std::get<std::string>(a)))<(boost::lexical_cast<double>(std::get<std::string>(b)));
+         }
+      );
    for(size_t i=0,i_size=contents.size();i<i_size;++i)
    {
       std::cout<<std::get<std::string>(contents.at(i))<<" "<<(std::get<double>(contents.at(i))/std::get<int>(contents.at(i)))<<std::endl;
